@@ -16,48 +16,94 @@ var _ = { };
   // Return an array of the first n elements of an array. If n is undefined,
   // return just the first element.
   _.first = function(array, n) {
+    if (!n) return array[0]
+    return array.slice(0, n)
   };
 
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
+    if (!n) return array[array.length - 1]
+    return array.slice(-n)
   };
 
   // Call iterator(value, key, collection) for each element of collection.
   // Accepts both arrays and objects.
   _.each = function(collection, iterator) {
+    for (let key in collection) {
+      iterator(collection[key], key, collection)
+    }
   };
 
   // Returns the index at which value can be found in the array, or -1 if value
   // is not present in the array.
   _.indexOf = function(array, target){
+    for (let i = 0; i < array.length; i++) {
+      if (array[i] === target) return i
+    }
+    return -1
   };
 
   // Return all elements of an array that pass a truth test ('iterator' function argument)
   _.filter = function(collection, iterator) {
+    const filteredArray = []
+    for (let i = 0; i < collection.length; i++) {
+      if (iterator(collection[i], i, collection)) filteredArray.push(collection[i])
+    }
+    return filteredArray
   };
 
   // Return all elements of an array that don't pass a truth test (the 'iterator' function argument)
   _.reject = function(collection, iterator) {
+    const rejectedArray = []
+    for (let i = 0; i < collection.length; i++) {
+      if (!(iterator(collection[i], i, collection))) rejectedArray.push(collection[i])
+    }
+    return rejectedArray
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    const uniqArray = []
+    for (let i = 0; i < array.length; i++) {
+      if (uniqArray.indexOf(array[i]) === -1) uniqArray.push(array[i])
+    }
+    return uniqArray
   };
 
 
   // Return the results of applying an iterator to each element.
   _.map = function(array, iterator) {
+    const mappedArray = []
+    for (let i = 0; i < array.length; i++) {
+      mappedArray.push(iterator(array[i], i, array))
+    }
+    return mappedArray
   };
 
   // Takes an array of objects and returns and array of the values of
   // a certain property in it. E.g. take an array of people and return
   // an array of just their ages
   _.pluck = function(array, propertyName) {
+    const pluckedArray = []
+    for (let i = 0; i < array.length; i++) {
+      pluckedArray.push(array[i][propertyName])
+    }
+    return pluckedArray
   };
 
   // Calls the method named by methodName on each value in the list.
   _.invoke = function(list, methodName, args) {
+    // console.log('list, methodName, args', list, methodName, args)
+    // for (let i = 0; i < list.length; i++) {
+      // for (let j = 0; j < list[i].length; j++) {
+        // console.log(list[i][methodName](args))
+        // list[i][methodName](args)
+      // }
+    // }
+    // for (let key in list) {
+    //   list[key][methodName](args)
+    // }
   };
 
   // Reduces an array or object to a single value by repetitively calling
@@ -107,6 +153,14 @@ var _ = { };
   // Return a function that can be called at most one time. Subsequent calls
   // should return the previously returned value.
   _.once = function(func) {
+    let called = false
+    return function() {
+      if (!called) {
+        called = true
+        return func()
+      }
+      else return
+    }
   };
 
   // Memoize an expensive function by storing its results. You may assume
@@ -116,6 +170,14 @@ var _ = { };
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    const memo = []
+    return function() {
+      if (memo.indexOf()) {
+        memo = true 
+        return func()
+      }
+      else return me
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -151,6 +213,14 @@ var _ = { };
   // Takes a multidimensional array and converts it to a one-dimensional array.
   // The new array should contain all elements of the multidimensional array.
   _.flatten = function(nestedArray, result) {
+    // return JSON.parse(`[${JSON.stringify(nestedArray).replace(/(\[|\])/g, '')}]`)
+    for (let i = 0; i < nestedArray.length; i++) {
+      if (Array.isArray(nestedArray[i])) {
+        nestedArray.splice(i, 1, ...nestedArray[i])
+        i--
+      }
+    }
+    return nestedArray
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
