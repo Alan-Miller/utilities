@@ -170,13 +170,10 @@ var _ = { };
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-    const memo = []
-    return function() {
-      if (memo.indexOf()) {
-        memo = true 
-        return func()
-      }
-      else return me
+    const memo = {}
+    return function(x) {
+      if (!(x in memo)) memo[x] = func(x)
+      return memo[x]
     }
   };
 
@@ -187,6 +184,14 @@ var _ = { };
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    const args = [...arguments]
+    args.shift()
+    args.shift()
+    return function() {
+      setTimeout(() => {
+        func(...args)
+      }, wait)
+    }
   };
 
 
