@@ -114,16 +114,31 @@ var _ = { };
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
+    let containsValue = false 
+    for (let key in collection) {
+      if (collection[key] === target) containsValue = true
+    }
+    return containsValue
   };
 
 
   // Determine whether all of the elements match a truth test.
-  _.every = function(collection, iterator) {
+  _.every = function(collection, iterator = x => x) {
+    let allPass = true
+    for (let i = 0; i < collection.length; i++) {
+      if (!(iterator(collection[i], i, collection))) allPass = false
+    }
+    return allPass
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
-  _.some = function(collection, iterator) {
+  _.some = function(collection, iterator = x => x) {
+    let somePass = false
+    for (let i = 0; i < collection.length; i++) {
+      if (iterator(collection[i], i, collection)) somePass = true
+    }
+    return somePass
   };
 
 
@@ -137,6 +152,9 @@ var _ = { };
   // Extend a given object with all the properties of the passed in
   // object(s).
   _.extend = function(obj) {
+    return function(...objs) {
+      return Object.assign(obj, ...objs)
+    }
   };
 
   // Like extend, but doesn't ever overwrite a key that already
@@ -185,9 +203,8 @@ var _ = { };
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
     let args = [...arguments].slice(2)
-    console.log('args', args)
     setTimeout(() => {
-      func(args)
+      func(...args)
     }, wait)
   };
 
