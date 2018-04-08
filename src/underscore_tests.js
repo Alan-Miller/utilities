@@ -184,14 +184,11 @@ var _ = { };
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
-    const args = [...arguments]
-    args.shift()
-    args.shift()
-    return function() {
-      setTimeout(() => {
-        func(...args)
-      }, wait)
-    }
+    let args = [...arguments].slice(2)
+    console.log('args', args)
+    setTimeout(() => {
+      func(args)
+    }, wait)
   };
 
 
