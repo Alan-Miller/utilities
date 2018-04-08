@@ -152,16 +152,16 @@ var _ = { };
   // Extend a given object with all the properties of the passed in
   // object(s).
   _.extend = function(obj) {
-    return function(...objs) {
-      return Object.assign(obj, ...objs)
-    }
+    const args = [...arguments]
+    return Object.assign(...args)
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    const args = [...arguments].reverse()
+    return Object.assign(...args)
   };
-
 
   /**
    * FUNCTIONS
@@ -212,6 +212,14 @@ var _ = { };
 
   // Shuffle an array.
   _.shuffle = function(array) {
+    const shuffledArray = []
+    const copy = array.slice()
+    while (copy.length > 0) {
+      let rando = Math.floor(Math.random() * copy.length)
+      shuffledArray.push(copy[rando])
+      copy.splice(rando, 1)
+    }
+    return shuffledArray
   };
 
   // Sort the object's values by a criterion produced by an iterator.
